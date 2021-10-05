@@ -1,16 +1,14 @@
-
-
 from pathlib import Path
 from fastai.vision.all import *
 
 
 def run_fast_classification():
 
-    imagenette_dir = Path('imagenette2-sample')
+    path = untar_data(URLs.IMAGENETTE_160)
 
-    dls = ImageDataLoaders.from_folder(imagenette_dir, train='train', valid='val', 
+    dls = ImageDataLoaders.from_folder(path, train='train', valid='val', 
                     item_tfms=RandomResizedCrop(128, min_scale=0.35), 
-                    batch_tfms=Normalize.from_stats(*imagenet_stats), bs=2)
+                    batch_tfms=Normalize.from_stats(*imagenet_stats))
 
     learn = cnn_learner(dls, resnet34, metrics=accuracy, pretrained=False)
 
